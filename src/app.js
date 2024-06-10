@@ -20,4 +20,4 @@ app.use(express.urlencoded({ extended: true }))
 app.use('/api/products', productsRouter)
 app.use('/api/carts', cartsRouter)
 
-const server = app.listen(PORT,() => console.log(`Server listening in port ${PORT}`))
+const server = app.listen(PORT,() => console.log(`Server escuchando en port ${PORT}`))

@@ -20,7 +20,7 @@ class CartManager {
     if (cart) {
       return cart.products;
     } else {
-      return "Cart isn't available";
+      return "Carrito no disponible";
     }
   };
 
@@ -30,7 +30,7 @@ class CartManager {
     this.carts = await this.getCarts();
     this.carts.push(newCart);
     this.saveFile(this.carts);
-    return `new cart created: ${newCart}`;
+    return `Nuevo carrito creado: ${newCart}`;
   };
 
   addProducttoCart = async (cartId, productId) => {
@@ -52,18 +52,18 @@ class CartManager {
       carts[index].products = cartProducts;
 
       await this.saveFile(carts);
-      console.log("product added to cart");
+      console.log("producto agregado al carrito");
     } else {
-      console.log("cart not found");
+      console.log("carrito no encontrado");
     }
   };
 
-  // additional functions
+  
 
   readFile = async () => {
     try {
       const response = await fs.readFile(this.path, "utf-8");
-      // convert JSON array will be parsed into a JavaScript array
+      
       return JSON.parse(response);
     } catch (error) {
       console.log(`Error al leer archivo ${this.path}`, error);
@@ -73,9 +73,9 @@ class CartManager {
   saveFile = async (cartArrays) => {
     try {
       await fs.writeFile(this.path, JSON.stringify(cartArrays, null, 2));
-      return "carts file saved";
+      return "carrito guardado";
     } catch (error) {
-      console.log(`Error writting file ${this.path}`, error);
+      console.log(`Error ${this.path}`, error);
       return error;
     }
   };

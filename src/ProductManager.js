@@ -43,8 +43,8 @@ class ProductManager {
             return newProduct      
 
         } catch (error) {
-            console.log(`There was an error when trying to add product`,error)
-            return(`There was an error when trying to add product`)
+            console.log(`Hubo un error al intentar agregar el producto`,error)
+            return(`Hubo un error al intentar agregar el producto`)
         }
     } 
 
@@ -62,9 +62,9 @@ class ProductManager {
             const productsArray = await this.getProducts()
             const productFind = productsArray.find(prod => prod.id == id)
             if (productFind){
-                console.log('Product not found: ',productFind)
+                console.log('Producto no encontrado: ',productFind)
             } else {
-                console.error("Product not found -  getProductbyid.")
+                console.error("Producto no encontrado -  getProductbyid.")
             }
         } catch (error) {
             return(`Error: ${error}`)
@@ -76,9 +76,9 @@ class ProductManager {
             let productsArray = await this.getProducts() 
             const pos = productsArray.findIndex(prod => prod.id === id)
             if ( pos != -1 ) {
-                // I clone the product to modify so as not to touch the origin
+                
                 const updateProduct = {...productsArray[pos]}
-                // I update only fields that I received
+                
                 for (const key in productChange) {
                     if (key !== 'id') {
                         updateProduct[key] = productChange[key]      
@@ -86,11 +86,11 @@ class ProductManager {
                 }
                 productsArray[pos] = updateProduct
                 await this.saveFile(productsArray);              
-                console.log('Product updated: ',updateProduct)
+                console.log('Producto actualizado: ',updateProduct)
                 return
             } else {
-                console.log('Product Not found to update')
-                return('Error, product not found')
+                console.log('No se encontro producto para actualizar')
+                return('Error, producto no encontrado')
             }
         } catch (error) {
             return(error)
@@ -105,11 +105,11 @@ class ProductManager {
                 productsArray.splice(pos,1)
             }
             else {
-                return ('Poduct not found')
+                return ('Poducto no encontrado')
             }
             await this.saveFile(productsArray)
-            console.log(`Product with id ${productId} has been successfully removed.`)
-            return('Product removed OK')
+            console.log(`Producto con id ${productId} fue eliminado correctamente.`)
+            return('Producto eliminado')
         } catch (error) {
             return(error)
         }
@@ -131,9 +131,9 @@ class ProductManager {
     saveFile = async(productsArrays) => {
         try {
             await fs.writeFile(this.path, JSON.stringify(productsArrays, null, 2));
-            return('File recorded successfully')
+            return('Archivo guardado correctamente')
         } catch (error) {
-            console.log(`File recording error ${this.path}`, error);
+            console.log(`Error al guardar archivo ${this.path}`, error);
             return(error)
         }
     }
@@ -141,10 +141,10 @@ class ProductManager {
     readFile = async () => {
         try {
             const response = await fs.readFile(this.path, "utf-8");
-            // convert JSON array will be parsed into a JavaScript array
+            
             return JSON.parse(response);
         } catch (error) {
-            console.log(`Error reading file ${this.path}`, error);
+            console.log(`Error al leer el archivo ${this.path}`, error);
         }
     }
 

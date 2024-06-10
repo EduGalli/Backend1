@@ -16,7 +16,7 @@ productsRouter.get('/', async (req,res) => {
             res.json(products)
         }
     } catch (error) {
-        res.send('error reading products')
+        res.send('error leyendo productos')
     }
 })  
 
@@ -26,17 +26,17 @@ productsRouter.get('/:id', async (req,res) => {
         const product = await prodManager.getProductById(id)
         res.json(product)
     } catch (error) {
-        res.send(`Error reading product id`)
+        res.send(`Error leyendo productos id`)
     }
 })
 
 productsRouter.post('/', async (req,res) => {
     try {
-        //title,description,code,price,status,stock,category,thumbnails in json ProductObject
+        
         const response = await prodManager.addProduct(req.body)
         res.json(response)
     } catch (error) {
-        res.send("Error to create product")
+        res.send("Error al crear producto")
     }
 })
 
@@ -46,7 +46,7 @@ productsRouter.put('/:id', async (req,res) => {
         const response = await prodManager.updateProduct(id,req.body)
         res.json(response)
     } catch (error) {
-        console.log('Error updating product')
+        console.log('Error actualizando producto')
     }
 }
 )
@@ -58,7 +58,7 @@ productsRouter.delete('/:id', async (req,res) => {
         const response = await prodManager.deleteProduct(id)
         res.json(response)
     } catch (error) {
-        console.log('Errr deleting product')
+        console.log('Error eliminando producto')
     }
 }
 )
