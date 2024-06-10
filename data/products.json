@@ -1,0 +1,35 @@
+[
+    {
+      "id": 1,
+      "title": "Cemento De Albañileria",
+      "description": "Cemento De Albañileria 40kg",
+      "price": 6300,
+      "thumbnails": "https://www.familiabercomat.com/on/demandware.static/-/Sites-FBM/default/dwf4a0e6be/images/medium/118847_0.jpg",
+      "code": "001",
+      "stock": 10,
+      "status": true,
+      "category": "A"
+    },
+    {
+      "id": 2,
+      "title": "Cal Hidratada",
+      "description": "Cal Hidratada Extra X 25 Kg",
+      "price": 3800,
+      "thumbnails":"https://www.familiabercomat.com/on/demandware.static/-/Sites-FBM/default/dwc0d05e63/images/medium/101227_0.jpg",
+      "code": "002",
+      "stock": 10,
+      "status": true,
+      "category": "B"
+    },
+    {
+      "id": 3,
+      "title": "Ladrillo de Poliester",
+      "description": "Ladrillo De Poliester 10X42X100",
+      "price": 3000,
+      "thumbnails": "https://www.familiabercomat.com/on/demandware.static/-/Sites-FBM/default/dwfcfc1958/images/medium/140730_0.jpg",
+      "code": "003",
+      "stock": 20,
+      "status": true,
+      "category": "C"
+    }
+  ]
