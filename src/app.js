@@ -29,7 +29,7 @@ const httpServer = app.listen(PUERTO, () => {
 });
 
 import ProductManager from "./controllers/ProductManager.js";
-const productManager = new ProductManager("./src/models/productos.json");
+const productManager = new ProductManager("./src/models/product.model.js");
 
 const io = new Server(httpServer); 
 
