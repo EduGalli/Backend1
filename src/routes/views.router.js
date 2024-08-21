@@ -1,12 +1,31 @@
 import { Router } from "express";
 const router = Router(); 
 
-router.get("/realtimeproducts", async (req, res) => {
-    res.render("realtimeproducts");
+router.get("/login", (req, res) => {
+    if(req.session.login) {
+        return res.redirect("/products"); 
+    }
+    res.render("login");
 })
 
-router.get("/productos", async (req, res) => {
-    res.render("home");
+router.get("/register", (req, res) => {
+    if(req.session.login) {
+        return res.redirect("/products"); 
+    }
+    res.render("register");
+
 })
 
-export default router;
+router.get("/profile", (req, res) => {
+    if(!req.session.login) {
+        return res.redirect("/login"); 
+    }
+    res.render("profile", {user: req.session.user});
+})
+
+router.get("/products", (req, res) => {
+    res.render("products", {user: req.session.user});
+})
+
+
+export default router; 
