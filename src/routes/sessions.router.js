@@ -1,106 +1,63 @@
 import { Router } from "express";
 const router = Router();
-import UsuarioModel from "../models/usuarios.model.js";
+import UserModel from "../dao/models/user.model.js";
 import { createHash, isValidPassword } from "../util/util.js";
+
+//Importamos passport: 
 import passport from "passport";
-import jwt from "jsonwebtoken";
 
-
-
-router.post("/register", async (req, res) => {
-    const { usuario, password } = req.body;
-
-    try {
-        
-        const existeUsuario = await UsuarioModel.findOne({ usuario });
-
-        if (existeUsuario) {
-            return res.status(400).send("El usuario ya existe");
-        }
-
-       
-        const nuevoUsuario = new UsuarioModel({
-            usuario,
-            password: createHash(password)
-        })
-
-        
-        await nuevoUsuario.save();
-
-         
-        const token = jwt.sign({ usuario: nuevoUsuario.usuario, rol: nuevoUsuario.rol }, "coderhouse", { expiresIn: "1h" });
-
-        
-        res.cookie("coderCookieToken", token, {
-            maxAge: 3600000, 
-            httpOnly: true
-        })
-
-        res.redirect("/api/sessions/current");
-
-    } catch (error) {
-        res.status(500).send("Error interno del servidor, nos vamos a moriiiiir");
+router.post("/register", passport.authenticate("register", {
+    failureRedirect: "/failedregister"
+}), async (req, res) => {
+    req.session.user = {
+        first_name: req.user.first_name,
+        last_name: req.user.last_name,
+        age: req.user.age,
+        email: req.user.email,
+        role: req.user.role
     }
+
+    req.session.login = true;
+
+    res.redirect("/products");
 })
 
-//Login
 
-router.post("/login", async (req, res) => {
-    const { usuario, password } = req.body;
-
-    try {
-        const usuarioEncontrado = await UsuarioModel.findOne({ usuario });
-
-        
-        if (!usuarioEncontrado) {
-            return res.status(401).send("Usuario no valido");
-        }
-
-        if (!isValidPassword(password, usuarioEncontrado)) {
-            return res.status(401).send("Password malvado");
-        }
-
-       
-        const token = jwt.sign({ usuario: usuarioEncontrado.usuario, rol: usuarioEncontrado.rol }, "coderhouse", { expiresIn: "1h" });
-
-        res.cookie("coderCookieToken", token, {
-            maxAge: 3600000,
-            httpOnly: true 
-        })
-
-        res.redirect("/api/sessions/current");
+router.get("/failedregister", (req, res) => {
+    res.send("Registro fallido");
+})
 
 
-    } catch (error) {
-        res.status(500).send("Error interno del servidor, nos vamos a moriiiiir");
+
+router.post("/login", passport.authenticate("login", {
+    failureRedirect: "/api/sessions/faillogin"
+}), async (req, res) => {
+    req.session.user = {
+        first_name: req.user.first_name,
+        last_name: req.user.last_name,
+        age: req.user.age,
+        email: req.user.email,
+        role: req.user.role
     }
+
+    req.session.login = true;
+
+    res.redirect("/products");
+
 })
 
-router.get("/current", passport.authenticate("jwt", { session: false }), (req, res) => {
-    if (req.user) {
-        
-        res.render("home", { usuario: req.user.usuario });
-    } else {
-        
-        res.status(401).send("No autorizado");
+router.get("/faillogin", (req, res) => {
+    res.send("Fallo todo el login!!!"); 
+})
+
+//Logout
+
+router.get("/logout", (req, res) => {
+    if (req.session.login) {
+        req.session.destroy();
     }
-})
-
-router.post("/logout", (req, res) => {
-    
-    res.clearCookie("coderCookieToken");
-    res.redirect("/login"); 
+    res.redirect("/login");
 })
 
 
-router.get("/admin", passport.authenticate("jwt", {session:false}), (req, res) => {
-    if(req.user.rol !== "admin") {
-        return res.status(403).send("Acceso denegado, vete ladron de gallinas!"); 
-    } 
-    res.render("admin"); 
-})
-
-
-
-
-export default router; 
+export default router;
