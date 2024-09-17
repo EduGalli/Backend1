@@ -1,77 +1,28 @@
 import passport from "passport";
-import local from "passport-local";
-import UserModel from "../dao/models/user.model.js";
-import { createHash, isValidPassword } from "../util/util.js";
+import jwt from "passport-jwt";
 
-const LocalStrategy = local.Strategy;
+const JWTStrategy = jwt.Strategy;
+const ExtractJwt = jwt.ExtractJwt;
 
 const initializePassport = () => {
-    
-    passport.use("register", new LocalStrategy({
-        passReqToCallback: true,
-        usernameField: "email"
-        
-    }, async (req, username, password, done) => {
-        
-        const { first_name, last_name, email, age } = req.body;
-
+    passport.use("jwt", new JWTStrategy({
+        jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
+        secretOrKey: "coderhouse"
+    }, async (jwt_payload, done) => {
         try {
-            
-            let user = await UserModel.findOne({ email: email });
-            if (user) return done(null, false);
-            
-            let newUser = {
-                first_name,
-                last_name,
-                email,
-                age,
-                password: createHash(password)
-            }
-
-            let result = await UserModel.create(newUser);
-
-           
-
-            return done(null, result);
-
+            return done(null, jwt_payload);
         } catch (error) {
             return done(error);
         }
     }))
+}
 
-  
-    passport.use("login", new LocalStrategy({
-        usernameField: "email"
-    }, async (email, password, done) => {
-        try {
-           
-            const user = await UserModel.findOne({ email: email });
-            if (!user) {
-                console.log("Este usuario no existe ahhhhh auxilio!");
-                return done(null, false);
-            }
-
-            
-            if (!isValidPassword(password, user)) return done(null, false);
-            return done(null, user);
-        } catch (error) {
-            return done(error);
-        }
-    }))
-
-  
-
-    passport.serializeUser((user, done) => {
-        done(null, user._id);
-    })
-
-
-    passport.deserializeUser(async (id, done) => {
-        let user = await UserModel.findById({_id:id});
-        done(null, user); 
-    })
-
-
+const cookieExtractor = (req) => {
+    let token = null;
+    if(req && req.cookies) {
+        token = req.cookies["coderCookieToken"]
+    }
+    return token;
 }
 
 export default initializePassport;

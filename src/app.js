@@ -38,11 +38,11 @@ app.use(session({
 
 // Configuración de Handlebars
 app.engine("handlebars", engine({
-    layoutsDir: join(__dirname, 'views', 'layouts'), // Configura el directorio de layouts
-    defaultLayout: 'main', // Archivo de layout por defecto
+    layoutsDir: join(__dirname, 'views', 'layouts'), // Directorio de layouts
+    defaultLayout: 'main', // Layout por defecto
 }));
 app.set("view engine", "handlebars"); 
-app.set("views", join(__dirname, 'views', 'layouts')); // Configura el directorio de vistas
+app.set("views", join(__dirname, 'views')); // Directorio de vistas
 
 // Passport
 app.use(passport.initialize()); 
