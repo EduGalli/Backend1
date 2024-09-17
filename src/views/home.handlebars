@@ -1,21 +1,9 @@
-<h1>Bienvenido, {{usuario}} !! </h1>
-<form action="/api/sessions/logout" method="POST">
-<button type="submit"> Logout </button>
-    </form>
-<h1>Productos</h1>
-{{#each productos}}
-<div class="contenedorProductos">
-    <div class="card col-sm-6 mb-3 mb-sm-0" style="width: 18rem;">
-        
-         
-        <img src="{{this.img}}" class="card-img-top" alt="...">
-            
-                <p>{{this.title}}</p>
-                <p>{{this.description}}</p>
-                <p>{{this.price}}</p>
-            
-        
-        
-    </div>
+<div class="contenedor-bienvenida">
+    <h2>Bienvenido !!</h2>
+    <h3>Email: {{user.email}}</h3>
+    <h3>Rol: {{user.role}}</h3>
 </div>
-{{/each}}
+
+<form class="formulario-logout" action="/api/sessions/logout" method="POST">
+    <button type="submit">Logout</button>
+</form>
