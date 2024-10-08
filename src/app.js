@@ -58,7 +58,7 @@ const httpServer = app.listen(PUERTO, () => {
     console.log(`Servidor escuchando en el puerto ${PUERTO}`);
 });
 
-import ProductManager from "./controllers/ProductManager.js";
+import ProductManager from "./dao/db/product-manager-db.js";
 const productManager = new ProductManager("./src/models/product.model.js");
 
 const io = new Server(httpServer); 
